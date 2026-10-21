@@ -10,33 +10,167 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiInsightsRouteImport } from './routes/ai-insights'
+import { Route as OverviewRouteImport } from './routes/overview'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as RoutePlannerRouteImport } from './routes/route-planner'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SustainabilityRouteImport } from './routes/sustainability'
+import { Route as InventoryIndexRouteImport } from './routes/inventory/index'
+import { Route as InventoryProductIdRouteImport } from './routes/inventory/$productId'
+import { Route as ShipmentsIndexRouteImport } from './routes/shipments/index'
+import { Route as ShipmentsShipmentIdRouteImport } from './routes/shipments/$shipmentId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiInsightsRoute = AiInsightsRouteImport.update({
+  id: '/ai-insights',
+  path: '/ai-insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OverviewRoute = OverviewRouteImport.update({
+  id: '/overview',
+  path: '/overview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoutePlannerRoute = RoutePlannerRouteImport.update({
+  id: '/route-planner',
+  path: '/route-planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SustainabilityRoute = SustainabilityRouteImport.update({
+  id: '/sustainability',
+  path: '/sustainability',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryIndexRoute = InventoryIndexRouteImport.update({
+  id: '/inventory/',
+  path: '/inventory/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryProductIdRoute = InventoryProductIdRouteImport.update({
+  id: '/inventory/$productId',
+  path: '/inventory/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShipmentsIndexRoute = ShipmentsIndexRouteImport.update({
+  id: '/shipments/',
+  path: '/shipments/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShipmentsShipmentIdRoute = ShipmentsShipmentIdRouteImport.update({
+  id: '/shipments/$shipmentId',
+  path: '/shipments/$shipmentId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-insights': typeof AiInsightsRoute
+  '/overview': typeof OverviewRoute
+  '/reports': typeof ReportsRoute
+  '/route-planner': typeof RoutePlannerRoute
+  '/settings': typeof SettingsRoute
+  '/sustainability': typeof SustainabilityRoute
+  '/inventory/$productId': typeof InventoryProductIdRoute
+  '/shipments/$shipmentId': typeof ShipmentsShipmentIdRoute
+  '/inventory/': typeof InventoryIndexRoute
+  '/shipments/': typeof ShipmentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-insights': typeof AiInsightsRoute
+  '/overview': typeof OverviewRoute
+  '/reports': typeof ReportsRoute
+  '/route-planner': typeof RoutePlannerRoute
+  '/settings': typeof SettingsRoute
+  '/sustainability': typeof SustainabilityRoute
+  '/inventory/$productId': typeof InventoryProductIdRoute
+  '/shipments/$shipmentId': typeof ShipmentsShipmentIdRoute
+  '/inventory': typeof InventoryIndexRoute
+  '/shipments': typeof ShipmentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-insights': typeof AiInsightsRoute
+  '/overview': typeof OverviewRoute
+  '/reports': typeof ReportsRoute
+  '/route-planner': typeof RoutePlannerRoute
+  '/settings': typeof SettingsRoute
+  '/sustainability': typeof SustainabilityRoute
+  '/inventory/$productId': typeof InventoryProductIdRoute
+  '/shipments/$shipmentId': typeof ShipmentsShipmentIdRoute
+  '/inventory/': typeof InventoryIndexRoute
+  '/shipments/': typeof ShipmentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ai-insights'
+    | '/overview'
+    | '/reports'
+    | '/route-planner'
+    | '/settings'
+    | '/sustainability'
+    | '/inventory/$productId'
+    | '/shipments/$shipmentId'
+    | '/inventory/'
+    | '/shipments/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ai-insights'
+    | '/overview'
+    | '/reports'
+    | '/route-planner'
+    | '/settings'
+    | '/sustainability'
+    | '/inventory/$productId'
+    | '/shipments/$shipmentId'
+    | '/inventory'
+    | '/shipments'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-insights'
+    | '/overview'
+    | '/reports'
+    | '/route-planner'
+    | '/settings'
+    | '/sustainability'
+    | '/inventory/$productId'
+    | '/shipments/$shipmentId'
+    | '/inventory/'
+    | '/shipments/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiInsightsRoute: typeof AiInsightsRoute
+  OverviewRoute: typeof OverviewRoute
+  ReportsRoute: typeof ReportsRoute
+  RoutePlannerRoute: typeof RoutePlannerRoute
+  SettingsRoute: typeof SettingsRoute
+  SustainabilityRoute: typeof SustainabilityRoute
+  InventoryProductIdRoute: typeof InventoryProductIdRoute
+  ShipmentsShipmentIdRoute: typeof ShipmentsShipmentIdRoute
+  InventoryIndexRoute: typeof InventoryIndexRoute
+  ShipmentsIndexRoute: typeof ShipmentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +182,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-insights': {
+      id: '/ai-insights'
+      path: '/ai-insights'
+      fullPath: '/ai-insights'
+      preLoaderRoute: typeof AiInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/overview': {
+      id: '/overview'
+      path: '/overview'
+      fullPath: '/overview'
+      preLoaderRoute: typeof OverviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/route-planner': {
+      id: '/route-planner'
+      path: '/route-planner'
+      fullPath: '/route-planner'
+      preLoaderRoute: typeof RoutePlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sustainability': {
+      id: '/sustainability'
+      path: '/sustainability'
+      fullPath: '/sustainability'
+      preLoaderRoute: typeof SustainabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory/': {
+      id: '/inventory/'
+      path: '/inventory'
+      fullPath: '/inventory/'
+      preLoaderRoute: typeof InventoryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory/$productId': {
+      id: '/inventory/$productId'
+      path: '/inventory/$productId'
+      fullPath: '/inventory/$productId'
+      preLoaderRoute: typeof InventoryProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipments/': {
+      id: '/shipments/'
+      path: '/shipments'
+      fullPath: '/shipments/'
+      preLoaderRoute: typeof ShipmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipments/$shipmentId': {
+      id: '/shipments/$shipmentId'
+      path: '/shipments/$shipmentId'
+      fullPath: '/shipments/$shipmentId'
+      preLoaderRoute: typeof ShipmentsShipmentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiInsightsRoute: AiInsightsRoute,
+  OverviewRoute: OverviewRoute,
+  ReportsRoute: ReportsRoute,
+  RoutePlannerRoute: RoutePlannerRoute,
+  SettingsRoute: SettingsRoute,
+  SustainabilityRoute: SustainabilityRoute,
+  InventoryProductIdRoute: InventoryProductIdRoute,
+  ShipmentsShipmentIdRoute: ShipmentsShipmentIdRoute,
+  InventoryIndexRoute: InventoryIndexRoute,
+  ShipmentsIndexRoute: ShipmentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

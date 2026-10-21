@@ -18,12 +18,7 @@ export type RecommendationCategory =
 export type RecommendationStatus = "open" | "accepted" | "rejected" | "review";
 
 export type MovementType =
-  | "stock_in"
-  | "stock_out"
-  | "adjustment"
-  | "transfer_out"
-  | "transfer_in"
-  | "shipped";
+  "stock_in" | "stock_out" | "adjustment" | "transfer_out" | "transfer_in" | "shipped";
 
 export interface Warehouse {
   id: string;

@@ -6,7 +6,9 @@ export type CsvValue = string | number | boolean | null | undefined;
  */
 export function toCsv(rows: Record<string, CsvValue>[]): string {
   if (rows.length === 0) return "";
-  const columns = Object.keys(rows[0]);
+  const firstRow = rows[0];
+  if (!firstRow) return "";
+  const columns = Object.keys(firstRow);
   const escape = (v: CsvValue): string => {
     if (v === null || v === undefined) return "";
     const s = String(v);

@@ -1,4 +1,11 @@
-import type { DateRangePreset, RoutePlanMetrics, Shipment, StockRecord, VehicleType, Warehouse } from "@/types";
+import type {
+  DateRangePreset,
+  RoutePlanMetrics,
+  Shipment,
+  StockRecord,
+  VehicleType,
+  Warehouse,
+} from "@/types";
 import { FUEL_PRICE_PER_L, VEHICLES } from "@/data/seed";
 import type { Product } from "@/types";
 import { NEAR_EXPIRY_DAYS } from "@/data/seed";
@@ -22,11 +29,19 @@ export function isNearExpiry(product: Product): boolean {
 }
 
 export function formatMoney(value: number): string {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
 export function formatMoneyPrecise(value: number): string {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(value);
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 2,
+  }).format(value);
 }
 
 export function formatNumber(value: number): string {
@@ -94,7 +109,9 @@ export function dailySeries(
     const d = new Date();
     d.setUTCDate(d.getUTCDate() - i);
     const t = (days - i) / days;
-    const wave = Math.sin(phase + t * Math.PI * 2) * variation + Math.sin(phase2 + t * Math.PI * 6) * variation * 0.4;
+    const wave =
+      Math.sin(phase + t * Math.PI * 2) * variation +
+      Math.sin(phase2 + t * Math.PI * 6) * variation * 0.4;
     const weekend = d.getUTCDay() === 0 || d.getUTCDay() === 6 ? -0.12 : 0;
     const value = Math.max(0, base * (1 + wave + weekend + (t - 0.5) * variation * 0.3));
     out.push({ date: d.toISOString().slice(0, 10), value });
@@ -125,13 +142,16 @@ export function computeRouteMetrics(
   const legs = (points: RoutePoint[]): number =>
     points.slice(1).reduce((sum, p, i) => {
       const prev = points[i];
+      if (!prev) return sum;
       const dx = (p.x - prev.x) * 22;
       const dy = (p.y - prev.y) * 22;
       return sum + Math.max(40, Math.sqrt(dx * dx + dy * dy));
     }, 0);
 
   const v = VEHICLES[vehicle];
-  const rnd = seededRandom(`${origin.x},${origin.y}|${destination.x},${destination.y}|${stops.length}|${vehicle}|${priority}`);
+  const rnd = seededRandom(
+    `${origin.x},${origin.y}|${destination.x},${destination.y}|${stops.length}|${vehicle}|${priority}`,
+  );
 
   const orderedCurrent = [origin, ...stops, destination];
   const currentDirect = legs([origin, destination]);
@@ -177,9 +197,11 @@ export function routePointsFor(
   stops: string[],
 ): RoutePoint[] {
   const origin = warehouses.find((w) => w.id === originWarehouseId) ?? warehouses[0];
+  const originX = origin ? origin.mapX : 50;
+  const originY = origin ? origin.mapY : 50;
   const stopPoints = stops
     .map((id) => warehouses.find((w) => w.id === id))
     .filter((w): w is Warehouse => Boolean(w))
     .map((w) => ({ x: w.mapX, y: w.mapY }));
-  return [{ x: origin.mapX, y: origin.mapY }, ...stopPoints, destinationPoint];
+  return [{ x: originX, y: originY }, ...stopPoints, destinationPoint];
 }

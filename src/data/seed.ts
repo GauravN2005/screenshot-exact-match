@@ -143,7 +143,8 @@ function shipment(
     { label: "Delivered", timestamp: status === "delivered" ? estimatedArrival : null, done: status === "delivered" },
   ];
   if (status === "delivered" && !deliveredOnTime) {
-    milestones[milestones.length - 1].timestamp = daysFromNow(dispatchOffset + transitDays + 2);
+    const last = milestones[milestones.length - 1];
+    if (last) last.timestamp = daysFromNow(dispatchOffset + transitDays + 2);
   }
   return {
     id,
@@ -165,8 +166,14 @@ function shipment(
   };
 }
 
+function dest(index: number): DestinationPoint {
+  const d = DESTINATIONS[index];
+  if (!d) throw new Error(`Unknown destination index ${index}`);
+  return d;
+}
+
 function routeDistanceFor(warehouseId: string, destination: DestinationPoint): number {
-  const w = WAREHOUSES.find((x) => x.id === warehouseId) ?? WAREHOUSES[0];
+  const w = WAREHOUSES.find((x) => x.id === warehouseId) ?? WAREHOUSES[0]!;
   const dx = (destination.x - w.mapX) * 22;
   const dy = (destination.y - w.mapY) * 22;
   return Math.max(60, Math.sqrt(dx * dx + dy * dy));
@@ -175,20 +182,20 @@ function routeDistanceFor(warehouseId: string, destination: DestinationPoint): n
 export { routeDistanceFor };
 
 export const SHIPMENTS: Shipment[] = [
-  shipment("S001", "ECH-TRK-4801", "ORD-77120", "wh-blr", DESTINATIONS[0], "GreenLine Logistics", "reefer", -6, 3, "delivered", null, true),
-  shipment("S002", "ECH-TRK-4802", "ORD-77126", "wh-del", DESTINATIONS[4], "SwiftMove Freight", "truck", -5, 2, "delivered", null, true),
-  shipment("S003", "ECH-TRK-4803", "ORD-77133", "wh-bom", DESTINATIONS[2], "MetroHaul", "truck", -9, 4, "delivered", null, false),
-  shipment("S004", "ECH-TRK-4804", "ORD-77140", "wh-maa", DESTINATIONS[12], "EcoExpress", "ev_van", -4, 2, "delivered", null, true),
-  shipment("S005", "ECH-TRK-4805", "ORD-77148", "wh-blr", DESTINATIONS[11], "GreenLine Logistics", "van", -3, 2, "in_transit", null, true),
-  shipment("S006", "ECH-TRK-4806", "ORD-77155", "wh-del", DESTINATIONS[14], "SwiftMove Freight", "truck", -2, 3, "in_transit", null, true),
-  shipment("S007", "ECH-TRK-4807", "ORD-77161", "wh-bom", DESTINATIONS[9], "MetroHaul", "van", -2, 1, "in_transit", null, true),
-  shipment("S008", "ECH-TRK-4808", "ORD-77164", "wh-maa", DESTINATIONS[10], "EcoExpress", "reefer", -1, 2, "in_transit", null, true),
-  shipment("S009", "ECH-TRK-4809", "ORD-77169", "wh-blr", DESTINATIONS[12], "EcoExpress", "reefer", -4, 1, "delayed", "Heavy rainfall on the Coastal Highway caused a 30-hour hold at the Salem depot.", true),
-  shipment("S010", "ECH-TRK-4810", "ORD-77171", "wh-del", DESTINATIONS[15], "SwiftMove Freight", "van", -6, 2, "delayed", "Carrier vehicle breakdown near Kanpur; replacement truck arranged.", false),
-  shipment("S011", "ECH-TRK-4811", "ORD-77180", "wh-bom", DESTINATIONS[1], "GreenLine Logistics", "van", 0, 1, "preparing", null, true),
-  shipment("S012", "ECH-TRK-4812", "ORD-77183", "wh-del", DESTINATIONS[7], "MetroHaul", "truck", 0, 2, "preparing", null, true),
-  shipment("S013", "ECH-TRK-4813", "ORD-77185", "wh-maa", DESTINATIONS[6], "EcoExpress", "ev_van", 1, 1, "preparing", null, true),
-  shipment("S014", "ECH-TRK-4814", "ORD-77188", "wh-blr", DESTINATIONS[13], "GreenLine Logistics", "van", -1, 2, "in_transit", null, true),
+  shipment("S001", "ECH-TRK-4801", "ORD-77120", "wh-blr", dest(0), "GreenLine Logistics", "reefer", -6, 3, "delivered", null, true),
+  shipment("S002", "ECH-TRK-4802", "ORD-77126", "wh-del", dest(4), "SwiftMove Freight", "truck", -5, 2, "delivered", null, true),
+  shipment("S003", "ECH-TRK-4803", "ORD-77133", "wh-bom", dest(2), "MetroHaul", "truck", -9, 4, "delivered", null, false),
+  shipment("S004", "ECH-TRK-4804", "ORD-77140", "wh-maa", dest(12), "EcoExpress", "ev_van", -4, 2, "delivered", null, true),
+  shipment("S005", "ECH-TRK-4805", "ORD-77148", "wh-blr", dest(11), "GreenLine Logistics", "van", -3, 2, "in_transit", null, true),
+  shipment("S006", "ECH-TRK-4806", "ORD-77155", "wh-del", dest(14), "SwiftMove Freight", "truck", -2, 3, "in_transit", null, true),
+  shipment("S007", "ECH-TRK-4807", "ORD-77161", "wh-bom", dest(9), "MetroHaul", "van", -2, 1, "in_transit", null, true),
+  shipment("S008", "ECH-TRK-4808", "ORD-77164", "wh-maa", dest(10), "EcoExpress", "reefer", -1, 2, "in_transit", null, true),
+  shipment("S009", "ECH-TRK-4809", "ORD-77169", "wh-blr", dest(12), "EcoExpress", "reefer", -4, 1, "delayed", "Heavy rainfall on the Coastal Highway caused a 30-hour hold at the Salem depot.", true),
+  shipment("S010", "ECH-TRK-4810", "ORD-77171", "wh-del", dest(15), "SwiftMove Freight", "van", -6, 2, "delayed", "Carrier vehicle breakdown near Kanpur; replacement truck arranged.", false),
+  shipment("S011", "ECH-TRK-4811", "ORD-77180", "wh-bom", dest(1), "GreenLine Logistics", "van", 0, 1, "preparing", null, true),
+  shipment("S012", "ECH-TRK-4812", "ORD-77183", "wh-del", dest(7), "MetroHaul", "truck", 0, 2, "preparing", null, true),
+  shipment("S013", "ECH-TRK-4813", "ORD-77185", "wh-maa", dest(6), "EcoExpress", "ev_van", 1, 1, "preparing", null, true),
+  shipment("S014", "ECH-TRK-4814", "ORD-77188", "wh-blr", dest(13), "GreenLine Logistics", "van", -1, 2, "in_transit", null, true),
 ];
 
 export const ALERTS: AppAlert[] = [
